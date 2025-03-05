@@ -34,4 +34,14 @@ public class AdController {
     public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id, @RequestBody AdDTO ad) {
         return ResponseEntity.ok(ad);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<AdDTO>> getAdsMe() {
+        return ResponseEntity.ok(new ArrayList<>());
+    }
+
+    @PatchMapping("/{id}/image")
+    public ResponseEntity<Void> updateImage(@PathVariable Integer id) {
+        return ResponseEntity.ok().build();
+    }
 }
