@@ -12,5 +12,4 @@ public class CommentDTO {
     private Long createdAt;
     private Integer pk;
     private String text;
-
 }
