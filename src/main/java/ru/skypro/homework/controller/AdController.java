@@ -2,7 +2,7 @@ package ru.skypro.homework.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.AdDTO;
+import ru.skypro.homework.dto.Ad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +11,18 @@ import java.util.List;
 @RequestMapping("/ads")
 public class AdController {
     @GetMapping
-    public ResponseEntity<List<AdDTO>> getAllAds() {
+    public ResponseEntity<List<Ad>> getAllAds() {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
     @PostMapping
-    public ResponseEntity<AdDTO> addAd() {
-        return ResponseEntity.status(201).body(new AdDTO());
+    public ResponseEntity<Ad> addAd() {
+        return ResponseEntity.status(201).body(new Ad());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdDTO> getAds(@PathVariable Integer id) {
-        return ResponseEntity.ok(new AdDTO());
+    public ResponseEntity<Ad> getAds(@PathVariable Integer id) {
+        return ResponseEntity.ok(new Ad());
     }
 
     @DeleteMapping("/{id}")
@@ -31,12 +31,12 @@ public class AdController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id, @RequestBody AdDTO ad) {
+    public ResponseEntity<Ad> updateAds(@PathVariable Integer id, @RequestBody Ad ad) {
         return ResponseEntity.ok(ad);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<AdDTO>> getAdsMe() {
+    public ResponseEntity<List<Ad>> getAdsMe() {
         return ResponseEntity.ok(new ArrayList<>());
     }
 

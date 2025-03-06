@@ -2,7 +2,7 @@ package ru.skypro.homework.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CommentDTO;
+import ru.skypro.homework.dto.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,12 @@ import java.util.List;
 @RequestMapping("/ads/{adId}/comments")
 public class CommentController {
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Integer adId) {
+    public ResponseEntity<List<Comment>> getComments(@PathVariable Integer adId) {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Integer adId, @RequestBody CommentDTO comment) {
+    public ResponseEntity<Comment> addComment(@PathVariable Integer adId, @RequestBody Comment comment) {
         return ResponseEntity.ok(comment);
     }
 
@@ -26,7 +26,7 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId, @PathVariable Integer commentId, @RequestBody CommentDTO comment) {
+    public ResponseEntity<Comment> updateComment(@PathVariable Integer adId, @PathVariable Integer commentId, @RequestBody Comment comment) {
         return ResponseEntity.ok(comment);
     }
 }

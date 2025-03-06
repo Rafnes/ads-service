@@ -1,13 +1,11 @@
 package ru.skypro.homework.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class Ads {
     private Integer count;
-    private List<AdDTO> results;
+    private List<Ad> results;
 }
