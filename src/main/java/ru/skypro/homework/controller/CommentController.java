@@ -29,7 +29,7 @@ public class CommentController {
     @Operation(summary = "Удалить комментарий", description = "Удаляет комментарий по его ID")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")

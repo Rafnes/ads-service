@@ -35,7 +35,7 @@ public class AdController {
     @Operation(summary = "Удалить объявление", description = "Удаляет объявление по указанному ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAd(@PathVariable Integer id) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить объявление", description = "Обновляет информацию об объявлении по ID")
@@ -53,6 +53,6 @@ public class AdController {
     @Operation(summary = "Обновить изображение объявления", description = "Загружает или изменяет изображение для указанного объявления")
     @PatchMapping("/{id}/image")
     public ResponseEntity<Void> updateImage(@PathVariable Integer id) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
