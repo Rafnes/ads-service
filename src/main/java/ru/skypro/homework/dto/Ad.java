@@ -1,11 +1,9 @@
 package ru.skypro.homework.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-public class AdDTO {
+@Data
+public class Ad {
     private Integer author;
     private String image;
     private Integer pk;

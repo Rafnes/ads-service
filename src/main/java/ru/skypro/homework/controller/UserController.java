@@ -7,13 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.UserAvatarDTO;
-import ru.skypro.homework.dto.UserCredentialsDTO;
-import ru.skypro.homework.dto.UserDTO;
+import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.User;
 
 import javax.validation.Valid;
 
 @RestController
+@Tag(name = "Пользователи")
 @RequestMapping("/users")
 @Tag(name = "Пользователи", description = "Методы для управления пользователями и их данными")
 public class UserController {
@@ -26,14 +26,14 @@ public class UserController {
 
     @Operation(summary = "Получить информацию о пользователе", description = "Возвращает данные текущего авторизованного пользователя")
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getUserInfo() {
-        return ResponseEntity.ok(new UserDTO());
+    public ResponseEntity<User> getUserInfo() {
+        return ResponseEntity.ok(new User());
     }
 
     @Operation(summary = "Обновить данные пользователя", description = "Позволяет изменить имя, фамилию или другие данные пользователя")
     @PatchMapping("/me")
-    public ResponseEntity<UserCredentialsDTO> updateUserCredentials(@RequestBody UserCredentialsDTO userCredentialsDTO) {
-        return ResponseEntity.ok(new UserCredentialsDTO());
+    public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
+        return ResponseEntity.ok(new UpdateUser());
     }
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")

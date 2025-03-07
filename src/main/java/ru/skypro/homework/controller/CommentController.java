@@ -4,25 +4,26 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CommentDTO;
+import ru.skypro.homework.dto.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Tag(name = "Комментарии")
 @RequestMapping("/ads/{adId}/comments")
 @Tag(name = "Комментарии", description = "Методы для работы с комментариями к объявлениям")
 public class CommentController {
 
     @Operation(summary = "Получить все комментарии", description = "Возвращает список всех комментариев для указанного объявления")
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Integer adId) {
+    public ResponseEntity<List<Comment>> getComments(@PathVariable Integer adId) {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
     @Operation(summary = "Добавить комментарий", description = "Добавляет новый комментарий к объявлению")
     @PostMapping
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Integer adId, @RequestBody CommentDTO comment) {
+    public ResponseEntity<Comment> addComment(@PathVariable Integer adId, @RequestBody Comment comment) {
         return ResponseEntity.ok(comment);
     }
 
