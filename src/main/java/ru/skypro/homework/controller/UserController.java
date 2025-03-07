@@ -6,8 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.dto.UserCredentialsDTO;
-import ru.skypro.homework.dto.UserDTO;
+import ru.skypro.homework.dto.User;
 
 import javax.validation.Valid;
 
@@ -21,12 +20,12 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getUserInfo() {
-        return ResponseEntity.ok(new UserDTO());
+    public ResponseEntity<User> getUserInfo() {
+        return ResponseEntity.ok(new User());
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody UserCredentialsDTO userCredentialsDTO) {
+    public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
         return ResponseEntity.ok(new UpdateUser());
     }
 
