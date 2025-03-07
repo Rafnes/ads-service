@@ -2,6 +2,8 @@ package ru.skypro.homework.dto;
 
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 public class Comment {
     private Integer author;
@@ -10,4 +12,8 @@ public class Comment {
     private Long createdAt;
     private Integer pk;
     private String text;
+
+    public Comment() {
+        this.createdAt = Instant.now().toEpochMilli();
+    }
 }
