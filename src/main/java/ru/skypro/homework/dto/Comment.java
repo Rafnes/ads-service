@@ -1,11 +1,9 @@
 package ru.skypro.homework.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
-public class CommentDTO {
+@Data
+public class Comment {
     private Integer author;
     private String authorImage;
     private String authorFirstName;
