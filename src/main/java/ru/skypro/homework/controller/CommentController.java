@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,9 @@ public class CommentController {
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")
     @PatchMapping("/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId,
-                                                    @PathVariable Integer commentId,
-                                                    @RequestBody CommentDTO comment) {
+    public ResponseEntity<CreateOrUpdateComment> updateComment(@PathVariable Integer adId,
+                                                               @PathVariable Integer commentId,
+                                                               @RequestBody CreateOrUpdateComment comment) {
         return ResponseEntity.ok(comment);
     }
 }

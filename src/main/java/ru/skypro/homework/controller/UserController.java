@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
@@ -38,7 +39,7 @@ public class UserController {
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) 
-    public ResponseEntity<Void> updateUserAvatar () {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Void> updateUserAvatar (@RequestPart ("image") MultipartFile image) {
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

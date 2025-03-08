@@ -2,29 +2,40 @@ package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.Ad;
+import ru.skypro.homework.dto.Ads;
+import ru.skypro.homework.dto.CreateOrUpdateAd;
+import ru.skypro.homework.service.AdService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@Tag(name = "Объявления")
 @RequestMapping("/ads")
-@Tag(name = "Управление объявлениями", description = "Методы для работы с объявлениями")
+@Tag(name = "Объявления", description = "Методы для работы с объявлениями")
 public class AdController {
+    private final AdService adService;
+
+    AdController(AdService adService) {
+        this.adService = adService;
+    }
 
     @Operation(summary = "Получить все объявления", description = "Возвращает список всех объявлений")
     @GetMapping
-    public ResponseEntity<List<Ad>> getAllAds() {
-        return ResponseEntity.ok(new ArrayList<>());
+    public ResponseEntity<Ads> getAllAds() {
+        return ResponseEntity.ok(adService.getAllAds());
     }
 
     @Operation(summary = "Добавить объявление", description = "Создаёт новое объявление")
-    @PostMapping
-    public ResponseEntity<Ad> addAd() {
-        return ResponseEntity.status(201).body(new Ad());
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
+                                    @RequestPart("image") MultipartFile image) {
+        Ad ad = adService.addAd(properties, image);
+        return ResponseEntity.status(200).body(ad);
     }
 
     @Operation(summary = "Получить объявление по ID", description = "Возвращает объявление по указанному ID")
