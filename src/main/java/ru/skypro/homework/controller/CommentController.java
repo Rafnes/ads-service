@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
+import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import java.util.ArrayList;
@@ -18,14 +19,14 @@ public class CommentController {
 
     @Operation(summary = "Получить все комментарии", description = "Возвращает список всех комментариев для указанного объявления")
     @GetMapping
-    public ResponseEntity<List<Comment>> getComments(@PathVariable Integer adId) {
+    public ResponseEntity<List<Comments>> getComments(@PathVariable Integer adId) {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
     @Operation(summary = "Добавить комментарий", description = "Добавляет новый комментарий к объявлению")
     @PostMapping
-    public ResponseEntity<Comment> addComment(@PathVariable Integer adId, @RequestBody Comment comment) {
-        return ResponseEntity.ok(comment);
+    public ResponseEntity<Comments> addComment(@PathVariable Integer adId, @RequestBody CreateOrUpdateComment comment) {
+        return ResponseEntity.ok(new Comments());
     }
 
     @Operation(summary = "Удалить комментарий", description = "Удаляет комментарий по его ID")
@@ -36,9 +37,9 @@ public class CommentController {
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")
     @PatchMapping("/{commentId}")
-    public ResponseEntity<CreateOrUpdateComment> updateComment(@PathVariable Integer adId,
-                                                               @PathVariable Integer commentId,
-                                                               @RequestBody CreateOrUpdateComment comment) {
-        return ResponseEntity.ok(comment);
+    public ResponseEntity<Comment> updateComment(@PathVariable Integer adId,
+                                                 @PathVariable Integer commentId,
+                                                 @RequestBody CreateOrUpdateComment comment) {
+        return ResponseEntity.ok(new Comment());
     }
 }
