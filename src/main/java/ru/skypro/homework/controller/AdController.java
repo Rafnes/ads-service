@@ -6,9 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.Ad;
-import ru.skypro.homework.dto.Ads;
-import ru.skypro.homework.dto.CreateOrUpdateAd;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.AdService;
 
 import java.util.ArrayList;
@@ -40,31 +38,33 @@ public class AdController {
 
     @Operation(summary = "Получить объявление по ID", description = "Возвращает объявление по указанному ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Ad> getAds(@PathVariable Integer id) {
-        return ResponseEntity.ok(new Ad());
+    public ResponseEntity<ExtendedAd> getAd(@PathVariable Integer id) {
+        return ResponseEntity.ok(adService.getAd(id));
     }
 
     @Operation(summary = "Удалить объявление", description = "Удаляет объявление по указанному ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAd(@PathVariable Integer id) {
+        adService.deleteAd(id);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить объявление", description = "Обновляет информацию об объявлении по ID")
     @PatchMapping("/{id}")
-    public ResponseEntity<Ad> updateAds(@PathVariable Integer id, @RequestBody Ad ad) {
-        return ResponseEntity.ok(ad);
+    public ResponseEntity<Ad> updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAd ad) {
+        return ResponseEntity.ok(adService.updateAd(id, ad));
     }
 
     @Operation(summary = "Получить мои объявления", description = "Возвращает список объявлений, созданных текущим пользователем")
     @GetMapping("/me")
-    public ResponseEntity<List<Ad>> getAdsMe() {
-        return ResponseEntity.ok(new ArrayList<>());
+    public ResponseEntity <Ads> getUserAds() {
+        return ResponseEntity.ok(adService.getUserAds());
     }
 
-    @Operation(summary = "Обновить изображение объявления", description = "Загружает или изменяет изображение для указанного объявления")
-    @PatchMapping("/{id}/image")
-    public ResponseEntity<Void> updateImage(@PathVariable Integer id) {
+    @Operation(summary = "Обновить изображение объявления", description = "Обновляет картинки объявления")
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/{id}/image")
+    public ResponseEntity<Void> updateImage(@PathVariable Integer id,
+                                            @RequestPart ("image") MultipartFile image) {
         return ResponseEntity.noContent().build();
     }
 }

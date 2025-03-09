@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.Ads;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
+import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.service.AdService;
 
 @Service
@@ -20,12 +21,27 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Ad getAd(Integer Id) {
-        return new Ad();
+    public ExtendedAd getAd(Integer Id) {
+        return new ExtendedAd();
     }
 
     @Override
     public void deleteAd(Integer id) {
+
+    }
+
+    @Override
+    public Ad updateAd(Integer id, CreateOrUpdateAd ad) {
+        return new Ad();
+    }
+
+    @Override
+    public Ads getUserAds() {
+        return new Ads();
+    }
+
+    @Override
+    public void updateAdImage(Integer id, MultipartFile image) {
 
     }
 }
