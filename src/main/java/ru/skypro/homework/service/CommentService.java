@@ -5,8 +5,6 @@ import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 
-import java.util.List;
-
 public interface CommentService {
     ResponseEntity<Comments> getComments(Integer adId);
 

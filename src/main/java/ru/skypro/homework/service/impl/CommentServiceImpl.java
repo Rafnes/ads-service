@@ -7,8 +7,6 @@ import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.service.CommentService;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
