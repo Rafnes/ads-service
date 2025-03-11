@@ -8,10 +8,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: "id"
-                  type: "int"
+                  type: "serial"
                   constraints:
                     primaryKey: true
                     nullable: false
+                    autoincrement: true
               - column:
                   name: "email"
                   type: "varchar(255)"
@@ -38,6 +39,7 @@ databaseChangeLog:
                   type: "varchar(10)"
                   constraints:
                     nullable: false
+                    check:
               - column:
                   name: "image"
                   type: "varchar(255)"
@@ -47,10 +49,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: "id"
-                  type: "int"
+                  type: "serial"
                   constraints:
                     primaryKey: true
                     nullable: false
+                    autoincrement: true
               - column:
                   name: "author_id"
                   type: "int"
@@ -82,10 +85,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: "id"
-                  type: "int"
+                  type: "serial"
                   constraints:
                     primaryKey: true
                     nullable: false
+                    autoincrement: true
               - column:
                   name: "ad_id"
                   type: "int"
