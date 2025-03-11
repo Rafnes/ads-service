@@ -1,11 +1,13 @@
 package ru.skypro.homework.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.Instant;
 
+@Schema(name = "Comment")
 @Data
-public class Comment {
+public class CommentDTO {
     private Integer author;
     private String authorImage;
     private String authorFirstName;
@@ -13,7 +15,7 @@ public class Comment {
     private Integer pk;
     private String text;
 
-    public Comment() {
+    public CommentDTO() {
         this.createdAt = Instant.now().toEpochMilli();
     }
 }
