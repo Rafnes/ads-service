@@ -1,9 +1,11 @@
 package ru.skypro.homework.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+@Schema(name = "ExtendedAd")
 @Data
-public class ExtendedAd {
+public class ExtendedAdDTO {
     private Integer pk;
     private String authorFirstName;
     private String authorLastName;
