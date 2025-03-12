@@ -19,9 +19,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ad_id")
-//    private Ad ad;
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
