@@ -16,13 +16,13 @@ public class Comment {
     private Integer id;
 
 //    @ManyToOne
-//    @JoinColumn(name = "ad_id", nullable = false)
+//    @JoinColumn(name = "ad_id")
 //    private Ad ad;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id")
     private User author;
 
-    @Column(nullable = false, length = 64)
+    @Column(name = "text")
     private String text;
 }

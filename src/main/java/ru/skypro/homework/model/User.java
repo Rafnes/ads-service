@@ -16,16 +16,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email")
     private String email;
-    @Column(name = "first_name", nullable = false, length = 16)
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 16)
+    @Column(name = "last_name")
     private String lastName;
-    @Column(nullable = false, length = 20)
+    @Column(name = "phone")
     private String phone;
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private Role role;
     private String image;
 
