@@ -1,6 +1,7 @@
 package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
+
+    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     @Mapping(source = "author", target = "author.id")
     @Mapping(source = "pk", target = "ad.id")
