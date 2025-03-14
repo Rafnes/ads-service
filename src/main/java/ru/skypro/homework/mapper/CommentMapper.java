@@ -21,6 +21,8 @@ public interface CommentMapper {
 
     //_____ toDto___
     @Mapping(source = "author.id", target = "author")
+    @Mapping(source = "author.firstName", target = "authorFirstName")
+    @Mapping(source = "author.image", target = "authorImage")
     @Mapping(source = "ad.id", target = "pk")
     @Mapping(source = "text", target = "text")
     CommentDTO toDtoCommentDTO(Comment commentModel);

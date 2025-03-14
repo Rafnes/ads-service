@@ -18,12 +18,11 @@ public class AuthControllerTest {
     @DisplayName("login_test_from_AuthController")
     void login_() {
         //given
-        String userName;
-        String password;
+     //   String username;
+     //   String password;
 
             //when
             //then
-
         }
 
         @Test
