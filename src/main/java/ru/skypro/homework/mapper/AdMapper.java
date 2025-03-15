@@ -20,7 +20,7 @@ import java.util.List;
         @Mapping(source = "price", target = "price")
         Ad toModel(AdDTO dto);
 
-        @Mapping(source = "title", target = "name")
+        @Mapping(source = "title", target = "title")
         Ad toModel(CreateOrUpdateAdDTO dto);
 
         //

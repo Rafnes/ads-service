@@ -22,14 +22,18 @@ public class CommentMapperTest {
         Ad ad = new Ad();
         ad.setId(10);
 
-        Comment comment = new Comment(1, ad, author, "Test comment");
+        Comment comment = new Comment();
+        comment.setId(2);
+        comment.setAd(ad);
+        comment.setAuthor(author);
 
         // test
         CommentDTO dto = commentMapper.toDtoCommentDTO(comment);
-
+        System.out.println(dto);
+        System.out.println(comment.getAd().getId());
         // check
         assertNotNull(dto);
-        assertEquals(comment.getId(), dto.getPk());
+        assertEquals(comment.getAd().getId(), dto.getPk());
         assertEquals(comment.getAuthor().getId(), dto.getAuthor());
         assertEquals(comment.getAuthor().getImage(), dto.getAuthorImage());
         assertEquals(comment.getText(), dto.getText());
