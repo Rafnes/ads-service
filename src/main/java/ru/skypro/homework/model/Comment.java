@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -29,4 +30,30 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(id, comment.id)
+                && Objects.equals(ad, comment.ad)
+                && Objects.equals(author, comment.author)
+                && Objects.equals(text, comment.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ad, author, text);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", ad=" + ad +
+                ", author=" + author +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }
