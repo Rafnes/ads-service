@@ -1,5 +1,6 @@
 package ru.skypro.homework.mapper;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.UpdateUserDTO;
@@ -13,40 +14,49 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserMapperTest {
     private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
+    private User user;
+    private UserDTO userDTO;
+    private UpdateUserDTO updateUserDTO;
+
+    @BeforeEach
+    void setUp() {
+        user = new User();
+        user.setId(99);
+        user.setPhone("91123455");
+        user.setLastName("Ivanov");
+        user.setFirstName("John");
+        user.setImage("avatar.jpg");
+
+        userDTO = new UserDTO();
+        userDTO.setFirstName("John");
+        userDTO.setPhone("91123455");
+
+        updateUserDTO = new UpdateUserDTO();
+        updateUserDTO.setFirstName("John");
+        updateUserDTO.setPhone("91123455");
+    }
+
     @Test
-    void test2() {
-        //given
-        User author = new User();
-        author.setId(99);
-        author.setPhone("91123455");
-        author.setLastName("Ivanov");
-        author.setFirstName("John");
-        author.setImage("avatar.jpg");
+    void testToDtoUserDTO() {
+        UserDTO mappedDto = userMapper.toDtoUserDTO(user);
+        assertNotNull(mappedDto);
+        assertEquals(user.getFirstName(), mappedDto.getFirstName());
+        assertEquals(user.getPhone(), mappedDto.getPhone());
+    }
 
-        Ad ad = new Ad();
-        ad.setId(6);
-        ad.setTitle("Объявление 1");
-        ad.setPrice(100);
-        ad.setAuthor(author);
+    @Test
+    void testToDtoUpdateUserDTO() {
+        UpdateUserDTO mappedDto = userMapper.toDtoUpdateUserDTO(user);
+        assertNotNull(mappedDto);
+        assertEquals(user.getFirstName(), mappedDto.getFirstName());
+        assertEquals(user.getPhone(), mappedDto.getPhone());
+    }
 
-        Comment comment = new Comment();
-        comment.setId(2);
-        comment.setAd(ad);
-        comment.setAuthor(author);
-        // test
-        UserDTO dto = userMapper.toDtoUserDTO(author);
-        System.out.println(dto);
-        System.out.println(author.getId());
-        // check
-        assertNotNull(dto);
-
-        assertEquals(author.getFirstName(), dto.getFirstName());
-        assertEquals(author.getPhone(), dto.getPhone());
-
-        UpdateUserDTO dto2 = userMapper.toDtoUpdateUserDTO(author);
-        System.out.println(dto2);
-
-        User modelUser = userMapper.toModel(dto);
-        System.out.println(modelUser.getId());
+    @Test
+    void testToModel() {
+        User mappedUser = userMapper.toModel(userDTO);
+        assertNotNull(mappedUser);
+        assertEquals(userDTO.getFirstName(), mappedUser.getFirstName());
+        assertEquals(userDTO.getPhone(), mappedUser.getPhone());
     }
 }
