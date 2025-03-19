@@ -2,16 +2,16 @@ package ru.skypro.homework.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.dto.User;
+import ru.skypro.homework.dto.NewPasswordDTO;
+import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.dto.UserDTO;
 
 public interface UserService {
-    ResponseEntity<Void> setPassword(NewPassword newPassword);
+    ResponseEntity<Void> setPassword(NewPasswordDTO newPasswordDTO);
 
-    ResponseEntity<User> getUserInfo();
+    ResponseEntity<UserDTO> getUserInfo();
 
-    ResponseEntity<UpdateUser> updateUser(UpdateUser updateUser);
+    ResponseEntity<UpdateUserDTO> updateUser(UpdateUserDTO updateUserDTO);
 
     ResponseEntity<Void> updateUserAvatar(MultipartFile image);
 
