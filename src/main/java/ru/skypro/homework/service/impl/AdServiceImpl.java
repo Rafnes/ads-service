@@ -1,6 +1,8 @@
 package ru.skypro.homework.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
@@ -121,8 +123,15 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdsDTO getUserAds() {
-
-        return new AdsDTO();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId = Integer.parseInt(userDetails.getUsername());
+        List<Ad> adsList = adRepository.findAllByAuthorId(userId);
+        List<AdDTO> adDTOList = new ArrayList<>();
+        for (Ad ad : adsList) {
+            AdDTO adDTO = adMapper.toDtoAdDTO(ad);
+            adDTOList.add(adDTO);
+        }
+        return new AdsDTO(adDTOList);
     }
 
 
