@@ -42,7 +42,6 @@ public class ImageForAdServiceImpl implements ImageService {
         }
 
         ExtendedAdDTO ad = adService.getAd(adId);
-
         // Создаем путь для сохранения изображения
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename(), "File name cannot be null");
         Path filePath = Path.of(imageDir, adId + "." + getExtension(originalFilename));
@@ -58,17 +57,14 @@ public class ImageForAdServiceImpl implements ImageService {
         }
 
         // Сохраняем изображение на диск
-        Files.write(filePath, resizedImage, CREATE_NEW);
+        Files.write(filePath, resizedImage);
 
         // Ищем существующее изображение или создаем новое
         Image image = imageRepository.findByAdId(adId).orElse(new Image());
-        image.setAd(convertToAd(new ExtendedAdDTO()));
-        image.setFilePath(filePath.toString());
+        image.setAd(convertToAd(ad));
+        image.setFilePath(filePath.toString()); // Сохраняем путь к изображению
         image.setFileSize(resizedImage.length);
         image.setMediaType(file.getContentType());
-        image.setSavesDataInDb(resizedImage);
-
-        // Сохраняем изображение в репозитории
         imageRepository.save(image);
     }
 

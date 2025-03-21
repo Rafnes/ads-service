@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Setter
@@ -21,8 +20,6 @@ public class Image {
     private long fileSize;
 
     private String mediaType;
-
-    private byte[] savesDataInDb;
 
     @OneToOne
     @JoinColumn(name = "User_id")
@@ -44,16 +41,13 @@ public class Image {
                 && fileSize == image.fileSize
                 && Objects.equals(filePath, image.filePath)
                 && Objects.equals(mediaType, image.mediaType)
-                && Arrays.equals(savesDataInDb, image.savesDataInDb)
                 && Objects.equals(user, image.user)
                 && Objects.equals(ad, image.ad);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, filePath, fileSize, mediaType, user, ad);
-        result = 31 * result + Arrays.hashCode(savesDataInDb);
-        return result;
+        return Objects.hash(id, filePath, fileSize, mediaType, user, ad);
     }
 
     @Override
@@ -63,7 +57,6 @@ public class Image {
                 ", filePath='" + filePath + '\'' +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
-                ", savesDataInDb=" + Arrays.toString(savesDataInDb) +
                 ", user=" + user +
                 ", ad=" + ad +
                 '}';

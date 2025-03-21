@@ -69,12 +69,6 @@ public class AdServiceImpl implements AdService {
         image.setFileSize(imageFile.getSize());
         image.setMediaType(imageFile.getContentType());
 
-        try {
-            image.setSavesDataInDb(imageFile.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка при сохранении изображения", e);
-        }
-
         // Сохраняем изображение перед добавлением объявления
         image = imageRepository.save(image);
         model.setImage(image);
@@ -185,13 +179,8 @@ public class AdServiceImpl implements AdService {
         image.setFileSize(imageFile.getSize());
         image.setMediaType(imageFile.getContentType());
 
-        try {
-            image.setSavesDataInDb(imageFile.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка при сохранении изображения", e);
-        }
-
         image = imageRepository.save(image);
         ad.setImage(image);
+        adRepository.save(ad);
     }
 }

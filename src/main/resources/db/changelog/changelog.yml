@@ -177,9 +177,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: "saves_data_in_db"
-                  type: "bytea"
-              - column:
                   name: "user_id"
                   type: "int"
                   constraints:
