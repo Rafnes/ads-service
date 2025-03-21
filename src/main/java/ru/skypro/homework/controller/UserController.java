@@ -12,7 +12,7 @@ import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.service.UserService;
 
 import javax.validation.Valid;
-
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
 @Tag(name = "Пользователи")
 @RequestMapping("/users")
