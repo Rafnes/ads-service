@@ -36,6 +36,7 @@ public class AuthController {
     @Operation(summary = "Регистрация нового пользователя", description = "Позволяет создать нового пользователя в системе")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+        log.info("Севрвис регистрации: " + authService.register(registerDTO));
         if (authService.register(registerDTO)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
