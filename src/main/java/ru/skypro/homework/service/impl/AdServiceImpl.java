@@ -124,7 +124,9 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getUserAds() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId = Integer.parseInt(userDetails.getUsername());
+        Integer userId = 1;
+        //Integer userId = Integer.parseInt(userDetails.getUsername());
+        List<Ad> adList = adRepository.findAllByAuthorId(userId);
         List<Ad> adsList = adRepository.findAllByAuthorId(userId);
         List<AdDTO> adDTOList = new ArrayList<>();
         for (Ad ad : adsList) {
