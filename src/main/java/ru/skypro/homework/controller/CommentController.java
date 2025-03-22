@@ -30,21 +30,21 @@ public class CommentController {
     @PreAuthorize(ALL)
     @GetMapping
     public ResponseEntity<CommentsDTO> getComments(@PathVariable Integer adId) {
-        return commentService.getComments(adId);
+        return ResponseEntity.ok().body(commentService.getComments(adId));
     }
 
     @Operation(summary = "Добавить комментарий", description = "Добавляет новый комментарий к объявлению")
     @PreAuthorize(USER)
     @PostMapping
-    public ResponseEntity<CommentsDTO> addComment(@PathVariable Integer adId, @RequestBody CreateOrUpdateCommentDTO comment) {
-        return commentService.addComment(adId, comment);
+    public ResponseEntity<CommentDTO> addComment(@PathVariable Integer adId, @RequestBody CreateOrUpdateCommentDTO comment) {
+        return ResponseEntity.ok().body(commentService.addComment(adId, comment));
     }
 
     @Operation(summary = "Удалить комментарий", description = "Удаляет комментарий по его ID")
     @PreAuthorize(USER + " and @commentSecurityService.isOwner(authentication, #commentId)")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
-        return commentService.deleteComment(adId, commentId);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")
@@ -53,6 +53,6 @@ public class CommentController {
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDTO comment) {
-        return commentService.updateComment(adId, commentId, comment);
+        return ResponseEntity.ok().body(commentService.updateComment(adId, commentId, comment));
     }
 }

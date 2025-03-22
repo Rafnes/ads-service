@@ -1,46 +1,54 @@
 package ru.skypro.homework.service.impl;
 
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.RegisterDTO;
+import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.model.User;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserDetailsManager manager;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    public AuthServiceImpl(UserDetailsManager manager,
+    public AuthServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
-        this.manager = manager;
+        this.userRepository = userRepository;
         this.encoder = passwordEncoder;
     }
 
     @Override
     public boolean login(String userName, String password) {
-        if (!manager.userExists(userName)) {
-            return false;
-        }
-        UserDetails userDetails = manager.loadUserByUsername(userName);
-        return encoder.matches(password, userDetails.getPassword());
+        return userRepository.findByEmail(userName)
+                .map(user -> encoder.matches(password, user.getPassword()))
+                .orElse(false);
     }
 
     @Override
     public boolean register(RegisterDTO registerDTO) {
-        if (manager.userExists(registerDTO.getUsername())) {
+        if (userRepository.findByEmail(registerDTO.getUsername()).isPresent()) {
             return false;
         }
-        manager.createUser(
-                User.builder()
-                        .passwordEncoder(this.encoder::encode)
-                        .password(registerDTO.getPassword())
-                        .username(registerDTO.getUsername())
-                        .roles(registerDTO.getRole().name())
-                        .build());
+        if (registerDTO.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Пароль должен быть длиннее 8 символов");
+        }
+        log.info(registerDTO.toString());
+        User user = new User();
+        user.setEmail(registerDTO.getUsername());
+        user.setPassword(encoder.encode(registerDTO.getPassword()));
+        user.setRole(Role.valueOf(registerDTO.getRole().name()));
+        user.setEnabled(true);
+        user.setFirstName(registerDTO.getFirstName());
+        user.setLastName(registerDTO.getLastName());
+        user.setPhone(registerDTO.getPhone());
+        log.info(user.toString());
+
+        userRepository.save(user);
         return true;
     }
 

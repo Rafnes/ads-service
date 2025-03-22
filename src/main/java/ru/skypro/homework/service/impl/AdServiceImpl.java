@@ -24,7 +24,9 @@ import java.util.List;
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
+
     private final ImageRepository imageRepository;
+  
     private final AdMapper adMapper;
 
     public AdServiceImpl(AdRepository adRepository, ImageRepository imageRepository, AdMapper adMapper) {
@@ -144,7 +146,9 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getUserAds() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId = Integer.parseInt(userDetails.getUsername());
+        Integer userId = 1;
+        //Integer userId = Integer.parseInt(userDetails.getUsername());
+        List<Ad> adList = adRepository.findAllByAuthorId(userId);
         List<Ad> adsList = adRepository.findAllByAuthorId(userId);
         List<AdDTO> adDTOList = new ArrayList<>();
         for (Ad ad : adsList) {
