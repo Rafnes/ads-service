@@ -24,7 +24,9 @@ import java.util.List;
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
+
     private final ImageRepository imageRepository;
+  
     private final AdMapper adMapper;
 
     public AdServiceImpl(AdRepository adRepository, ImageRepository imageRepository, AdMapper adMapper) {
