@@ -10,8 +10,7 @@ import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 
-import static ru.skypro.homework.roles.Permissions.ALL;
-import static ru.skypro.homework.roles.Permissions.USER;
+import static ru.skypro.homework.roles.Permissions.*;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -41,14 +40,14 @@ public class CommentController {
     }
 
     @Operation(summary = "Удалить комментарий", description = "Удаляет комментарий по его ID")
-    @PreAuthorize(USER + " and @commentSecurityService.isOwner(authentication, #commentId)")
+    @PreAuthorize(ADMIN + " and @commentSecurityService.isOwner(authentication, #commentId)")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")
-    @PreAuthorize(USER + " and @commentSecurityService.isOwner(authentication, #commentId)")
+    @PreAuthorize(ADMIN + " and @commentSecurityService.isOwner(authentication, #commentId)")
     @PatchMapping("/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
