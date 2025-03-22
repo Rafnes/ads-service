@@ -5,6 +5,9 @@ import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.AdsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
+import ru.skypro.homework.model.Ad;
+
+import java.util.Optional;
 
 public interface AdService {
     AdsDTO getAllAds();

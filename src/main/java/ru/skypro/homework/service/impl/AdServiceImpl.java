@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -9,11 +8,15 @@ import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.AdsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
+import ru.skypro.homework.exception.AdNotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
+import ru.skypro.homework.model.Image;
 import ru.skypro.homework.repository.AdRepository;
+import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.AdService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +24,14 @@ import java.util.List;
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
+
+    private final ImageRepository imageRepository;
+  
     private final AdMapper adMapper;
 
-    @Autowired
-    public AdServiceImpl(AdRepository adRepository, AdMapper adMapper) {
+    public AdServiceImpl(AdRepository adRepository, ImageRepository imageRepository, AdMapper adMapper) {
         this.adRepository = adRepository;
+        this.imageRepository = imageRepository;
         this.adMapper = adMapper;
     }
 
@@ -52,13 +58,23 @@ public class AdServiceImpl implements AdService {
      * из данного MultipartFile и сохраняется в базу данных.
      *
      * @param properties свойства объявления, за исключением изображения
-     * @param image      изображение объявления
+     * @param imageFile  изображение объявления
      * @return сохраненное объявление
      */
     @Override
-    public AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile image) {
+    public AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile imageFile) {
         Ad model = adMapper.toModel(properties);
-        model.setImage(image.getOriginalFilename());
+
+        // Создаём новый объект Image
+        Image image = new Image();
+        image.setFilePath(imageFile.getOriginalFilename());
+        image.setFileSize(imageFile.getSize());
+        image.setMediaType(imageFile.getContentType());
+
+        // Сохраняем изображение перед добавлением объявления
+        image = imageRepository.save(image);
+        model.setImage(image);
+
         adRepository.save(model);
         return adMapper.toDtoAdDTO(model);
     }
@@ -72,7 +88,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public ExtendedAdDTO getAd(Integer id) {
-        Ad ad = adRepository.findById(id).orElseThrow();
+        Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         return adMapper.toDtoExtendedAdDTO(ad);
     }
 
@@ -88,6 +104,12 @@ public class AdServiceImpl implements AdService {
     @Override
     public void deleteAd(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow();
+
+        // Удаляем изображение, если оно есть
+        if (ad.getImage() != null) {
+            imageRepository.delete(ad.getImage());
+        }
+
         adRepository.delete(ad);
     }
 
@@ -141,12 +163,26 @@ public class AdServiceImpl implements AdService {
      * Обновляет изображение объявления с указанным {@code id} на новое
      * изображение, переданное в {@code image}.
      *
-     * @param id    ID объявления
-     * @param image новое изображение
+     * @param id        ID объявления
+     * @param imageFile новое изображение
      */
     @Override
-    public void updateAdImage(Integer id, MultipartFile image) {
+    public void updateAdImage(Integer id, MultipartFile imageFile) {
         Ad ad = adRepository.findById(id).orElseThrow();
-        ad.setImage(image.getOriginalFilename());
+
+        // Удаляем старое изображение, если оно есть
+        if (ad.getImage() != null) {
+            imageRepository.delete(ad.getImage());
+        }
+
+        // Создаём новое изображение
+        Image image = new Image();
+        image.setFilePath(imageFile.getOriginalFilename());
+        image.setFileSize(imageFile.getSize());
+        image.setMediaType(imageFile.getContentType());
+
+        image = imageRepository.save(image);
+        ad.setImage(image);
+        adRepository.save(ad);
     }
 }
