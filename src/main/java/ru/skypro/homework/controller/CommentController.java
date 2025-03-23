@@ -40,14 +40,14 @@ public class CommentController {
     }
 
     @Operation(summary = "Удалить комментарий", description = "Удаляет комментарий по его ID")
-    @PreAuthorize(ADMIN + " and @commentSecurityService.isOwner(authentication, #commentId)")
+    @PreAuthorize(USER + " and @commentSecurityService.isOwner(#commentId) or " + ADMIN)
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Обновить комментарий", description = "Обновляет текст комментария по его ID")
-    @PreAuthorize(ADMIN + " and @commentSecurityService.isOwner(authentication, #commentId)")
+    @PreAuthorize(USER + " and @commentSecurityService.isOwner(#commentId) or " + ADMIN)
     @PatchMapping("/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
