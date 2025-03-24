@@ -14,7 +14,7 @@ import java.util.List;
 
         //_____ toModel___
         @Mapping(source = "author", target = "author.id")
-        @Mapping(source = "image", target = "image")
+        @Mapping(source = "image", target = "image.id")
         @Mapping(source = "pk", target = "id")
         @Mapping(source = "title", target = "title")
         @Mapping(source = "price", target = "price")
@@ -28,7 +28,7 @@ import java.util.List;
         @Mapping(source = "authorFirstName", target = "author.firstName")
         @Mapping(source = "authorLastName", target = "author.lastName")
         @Mapping(source = "email", target = "author.email")
-        @Mapping(source = "image", target = "image")
+        @Mapping(source = "image", target = "image.id")
         @Mapping(source = "phone", target = "author.phone")
         @Mapping(source = "title", target = "title")
         @Mapping(source = "price", target = "price")
@@ -37,7 +37,7 @@ import java.util.List;
         //
         //_____ toDto___
         @Mapping(target = "author", source = "author.id")
-        @Mapping(target = "image", source = "image")
+        @Mapping(target = "image", source = "image.id")
         @Mapping(target = "pk", source = "id")
         @Mapping(target = "title", source = "title")
         AdDTO toDtoAdDTO(Ad ad);
@@ -48,7 +48,7 @@ import java.util.List;
         @Mapping(target = "authorFirstName", source = "author.firstName")
         @Mapping(target = "authorLastName", source = "author.lastName")
         @Mapping(target = "email", source = "author.email")
-        @Mapping(target = "image", source = "image")
+        @Mapping(target = "image", source = "image.id")
         @Mapping(target = "phone", source = "author.phone")
         @Mapping(target = "title", source = "title")
         ExtendedAdDTO toDtoExtendedAdDTO(Ad ad);
