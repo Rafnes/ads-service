@@ -34,9 +34,6 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.findByEmail(registerDTO.getUsername()).isPresent()) {
             return false;
         }
-        if (registerDTO.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Пароль должен быть длиннее 8 символов");
-        }
         log.info(registerDTO.toString());
         User user = new User();
         user.setEmail(registerDTO.getUsername());
