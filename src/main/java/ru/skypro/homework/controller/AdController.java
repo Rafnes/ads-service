@@ -43,7 +43,7 @@ public class AdController {
     }
 
     @Operation(summary = "Получить объявление по ID", description = "Возвращает объявление по указанному ID")
-    @PreAuthorize(USER + " or " + ADMIN)
+    @PreAuthorize(ALL)
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAdDTO> getAd(@PathVariable Integer id) {
         return ResponseEntity.ok(adService.getAd(id));

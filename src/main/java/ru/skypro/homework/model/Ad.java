@@ -24,7 +24,7 @@ public class Ad {
     private User author;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JoinColumn(name = "image_id")
     private Image image;
 
     @Column(name = "price", nullable = false)

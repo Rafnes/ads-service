@@ -18,11 +18,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Вошли в loadUserByUsername");
 
         return userRepository.findByEmail(username)
                 .map(user -> {
-                    log.info("Преобразуем User в SecurityUser для пользователя {}", user.getEmail());
+                    log.debug("Преобразуем User в SecurityUser для пользователя {}", user.getEmail());
                     return new SecurityUser(user);
                 })
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

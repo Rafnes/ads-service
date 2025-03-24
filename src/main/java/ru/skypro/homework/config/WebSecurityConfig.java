@@ -51,14 +51,8 @@ public class WebSecurityConfig {
                                         .authenticated())
                 .cors()
                 .and()
-                .userDetailsService(userDetailsService(userRepository))
                 .httpBasic(withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new UserDetailsServiceImpl(userRepository);
     }
 
     @Bean

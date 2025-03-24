@@ -21,13 +21,6 @@ public class Image {
 
     private String mediaType;
 
-    @OneToOne
-    @JoinColumn(name = "User_id")
-    private User user;
-
-    @OneToOne
-    @JoinColumn(name = "Ad_id")
-    private Ad ad;
 
     public Image() {
     }
