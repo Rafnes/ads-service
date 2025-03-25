@@ -227,3 +227,23 @@ databaseChangeLog:
                   referencedColumnNames: "id"
                   constraintName: "fk_ads_image"
                   onDelete: "CASCADE"
+  - changeSet:
+        id: "4"
+        author: "AFetisov"
+        changes:
+          - addColumn:
+              tableName: "users"
+              columns:
+                - column:
+                    name: "image_id"
+                    type: "int"
+                    constraints:
+                      nullable: true
+
+                - addForeignKeyConstraint:
+                    baseTableName: "users"
+                    baseColumnNames: "image_id"
+                    referencedTableName: "images"
+                    referencedColumnNames: "id"
+                    constraintName: "fk_users_image"
+                    onDelete: "CASCADE"

@@ -9,8 +9,4 @@ public interface ImageService {
     void addImage(int id, MultipartFile file) throws IOException;
 
     byte[] generateImage(Path filePath) throws IOException;
-
-    byte[] resizeImage(byte[] originalImage, int width, int height) throws IOException;
-
-    String getExtension(String filename);
 }

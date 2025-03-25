@@ -36,13 +36,7 @@ public class ImageForUserServiceImpl implements ImageService {
         return new byte[0];
     }
 
-    @Override
-    public byte[] resizeImage(byte[] originalImage, int width, int height) throws IOException {
-        return new byte[0];
-    }
-
-    @Override
-    public String getExtension(String filename) {
+    private String getExtension(String filename) {
         return null;
     }
 }

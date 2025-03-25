@@ -13,7 +13,7 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
 import ru.skypro.homework.service.AdService;
 
-import static ru.skypro.homework.roles.Permissions.*;
+import static ru.skypro.homework.roles.RoleAuthority.*;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
