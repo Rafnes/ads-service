@@ -8,7 +8,7 @@ import ru.skypro.homework.model.Image;
 @Data
 public class AdDTO {
     private Integer author;
-    private Image image;
+    private String image;
     private Integer pk;
     private Integer price;
     private String title;
