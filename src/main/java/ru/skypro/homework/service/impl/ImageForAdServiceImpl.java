@@ -48,8 +48,7 @@ public class ImageForAdServiceImpl implements ImageService {
         Files.deleteIfExists(filePath);
 
         Files.write(filePath, file.getBytes());
-
-        Image image = imageRepository.findByAdId(adId).orElse(new Image());
+        Image image = imageRepository.findById(adId).orElse(new Image());
         image.setFilePath(filePath.toString());
         image.setFileSize(file.getSize());
         image.setMediaType(file.getContentType());
