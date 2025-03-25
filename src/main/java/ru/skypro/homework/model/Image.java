@@ -21,7 +21,6 @@ public class Image {
 
     private String mediaType;
 
-
     public Image() {
     }
 
@@ -33,14 +32,12 @@ public class Image {
         return id == image.id
                 && fileSize == image.fileSize
                 && Objects.equals(filePath, image.filePath)
-                && Objects.equals(mediaType, image.mediaType)
-                && Objects.equals(user, image.user)
-                && Objects.equals(ad, image.ad);
+                && Objects.equals(mediaType, image.mediaType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, filePath, fileSize, mediaType, user, ad);
+        return Objects.hash(id, filePath, fileSize, mediaType);
     }
 
     @Override
@@ -50,8 +47,6 @@ public class Image {
                 ", filePath='" + filePath + '\'' +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
-                ", user=" + user +
-                ", ad=" + ad +
                 '}';
     }
 }

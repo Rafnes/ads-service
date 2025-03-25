@@ -1,9 +1,7 @@
 package ru.skypro.homework.exception;
 
-import java.io.IOException;
-
-public class FailedToReadFileException extends RuntimeException{
-   FailedToReadFileException(String message ) {
-       super(message);
-   }
+public class FailedToReadFileException extends RuntimeException {
+    public FailedToReadFileException(String message) {
+        super(message);
+    }
 }

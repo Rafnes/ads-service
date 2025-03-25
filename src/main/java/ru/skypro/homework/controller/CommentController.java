@@ -10,7 +10,7 @@ import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 
-import static ru.skypro.homework.roles.Permissions.*;
+import static ru.skypro.homework.roles.RoleAuthority.*;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
