@@ -10,4 +10,12 @@ import java.util.List;
 public class AdsDTO {
     private Integer count;
     private List<AdDTO> results;
+
+    public AdsDTO() {
+    }
+
+    public AdsDTO(List<AdDTO> results) {
+        this.results = results;
+        count = results.size();
+    }
 }

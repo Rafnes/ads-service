@@ -21,6 +21,7 @@ import ru.skypro.homework.service.AuthService;
 public class AuthController {
 
     private final AuthService authService;
+
     @Tag(name = "Авторизация")
     @Operation(summary = "Вход в систему", description = "Позволяет пользователю войти в систему, проверяя его логин и пароль")
     @PostMapping("/login")

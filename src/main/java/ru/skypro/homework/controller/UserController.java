@@ -10,9 +10,11 @@ import ru.skypro.homework.dto.NewPasswordDTO;
 import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.service.UserService;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
 @Tag(name = "Пользователи")
 @RequestMapping("/users")
@@ -27,20 +29,20 @@ public class UserController {
 
     @Operation(summary = "Сменить пароль", description = "Позволяет пользователю сменить пароль")
     @PostMapping("/set_password")
-    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO) {
-        return userService.setPassword(newPasswordDTO);
+    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO, Authentication authentication) {
+        return userService.setPassword(newPasswordDTO, authentication);
     }
 
     @Operation(summary = "Получить информацию о пользователе", description = "Возвращает данные текущего авторизованного пользователя")
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getUserInfo() {
-        return userService.getUserInfo();
+    public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
+        return userService.getUserInfo(authentication);
     }
 
     @Operation(summary = "Обновить данные пользователя", description = "Позволяет изменить имя, фамилию или другие данные пользователя")
     @PatchMapping("/me")
-    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
-        return userService.updateUser(updateUserDTO);
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, Authentication authentication) {
+        return userService.updateUser(updateUserDTO, authentication);
     }
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")
