@@ -12,7 +12,9 @@ import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.service.UserService;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -47,7 +49,13 @@ public class UserController {
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateUserAvatar(@RequestPart("image") MultipartFile image) {
-        return userService.updateUserAvatar(image);
+    public ResponseEntity<Void> updateUserAvatar(@RequestPart("image") MultipartFile image, Authentication authentication) {
+        return userService.updateUserAvatar(image, authentication);
     }
+    @GetMapping(value = "/me/image/{id}/get")
+    public void downloadAvatarFromFileSystem(@PathVariable int id, HttpServletResponse response)
+            throws IOException {
+        userService.downloadAvatarFromFileSystem(id, response);
+    }
+
 }
