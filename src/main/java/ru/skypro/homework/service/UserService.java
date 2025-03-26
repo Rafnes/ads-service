@@ -7,6 +7,10 @@ import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDTO;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Path;
+
 public interface UserService {
     ResponseEntity<Void> setPassword(NewPasswordDTO newPasswordDTO, Authentication authentication);
 
@@ -14,6 +18,8 @@ public interface UserService {
 
     ResponseEntity<UpdateUserDTO> updateUser(UpdateUserDTO updateUserDTO, Authentication authentication);
 
-    ResponseEntity<Void> updateUserAvatar(MultipartFile image);
+    ResponseEntity<Void> updateUserAvatar(MultipartFile image, Authentication authentication);
+
+    void downloadAvatarFromFileSystem(int id, HttpServletResponse response) throws IOException;
 
 }

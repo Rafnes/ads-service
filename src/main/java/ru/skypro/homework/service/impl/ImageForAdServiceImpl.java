@@ -35,7 +35,7 @@ public class ImageForAdServiceImpl implements ImageService {
     }
 
     @Override
-    public void addImage(int adId, MultipartFile file) throws IOException {
+    public Image addImage(int adId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File cannot be null or empty");
         }
@@ -53,6 +53,8 @@ public class ImageForAdServiceImpl implements ImageService {
         image.setFileSize(file.getSize());
         image.setMediaType(file.getContentType());
         imageRepository.save(image);
+
+        return image;
     }
 
     @Override
