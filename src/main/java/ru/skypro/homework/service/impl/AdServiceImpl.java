@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
@@ -9,30 +10,47 @@ import ru.skypro.homework.dto.AdsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
 import ru.skypro.homework.exception.AdNotFoundException;
+import ru.skypro.homework.exception.ImageNotSavedException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Image;
+import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.ImageService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Сервисный класс для управления обьявлениями.
+ */
 @Service
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
-
     private final ImageRepository imageRepository;
-  
     private final AdMapper adMapper;
+    private final ImageService imageService;
+    private final UserRepository userRepository;
 
-    public AdServiceImpl(AdRepository adRepository, ImageRepository imageRepository, AdMapper adMapper) {
+    public AdServiceImpl(AdRepository adRepository,
+                         ImageRepository imageRepository,
+                         AdMapper adMapper,
+                         ImageService imageService, UserRepository userRepository) {
         this.adRepository = adRepository;
         this.imageRepository = imageRepository;
         this.adMapper = adMapper;
+        this.imageService = imageService;
+        this.userRepository = userRepository;
     }
 
 
@@ -44,11 +62,9 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getAllAds() {
         List<Ad> adsList = adRepository.findAll();
-        List<AdDTO> adDTOList = new ArrayList<>();
-        for (Ad ad : adsList) {
-            AdDTO adDTO = adMapper.toDtoAdDTO(ad);
-            adDTOList.add(adDTO);
-        }
+        List<AdDTO> adDTOList = adsList.stream()
+                .map(adMapper::toDtoAdDTO)
+                .collect(Collectors.toList());
         return new AdsDTO(adDTOList);
     }
 
@@ -64,17 +80,12 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile imageFile) {
         Ad model = adMapper.toModel(properties);
-
-        // Создаём новый объект Image
-        Image image = new Image();
-        image.setFilePath(imageFile.getOriginalFilename());
-        image.setFileSize(imageFile.getSize());
-        image.setMediaType(imageFile.getContentType());
-
-        // Сохраняем изображение перед добавлением объявления
-        image = imageRepository.save(image);
-        model.setImage(image);
-
+        try {
+            Image image = imageService.addImage(0, imageFile);
+            model.setImage(image);
+        } catch (IOException e) {
+            throw new ImageNotSavedException("Ошибка при сохранении изображения");
+        }
         adRepository.save(model);
         return adMapper.toDtoAdDTO(model);
     }
@@ -103,13 +114,10 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public void deleteAd(Integer id) {
-        Ad ad = adRepository.findById(id).orElseThrow();
-
-        // Удаляем изображение, если оно есть
+        Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         if (ad.getImage() != null) {
             imageRepository.delete(ad.getImage());
         }
-
         adRepository.delete(ad);
     }
 
@@ -127,10 +135,11 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdDTO updateAd(Integer id, CreateOrUpdateAdDTO createOrUpdateAdDTO) {
-        Ad ad = adRepository.findById(id).orElseThrow();
+        Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         ad.setTitle(createOrUpdateAdDTO.getTitle());
         ad.setPrice(createOrUpdateAdDTO.getPrice());
         ad.setDescription(createOrUpdateAdDTO.getDescription());
+        adRepository.save(ad);
         return adMapper.toDtoAdDTO(ad);
     }
 
@@ -146,15 +155,17 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getUserAds() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId = 1;
-        //Integer userId = Integer.parseInt(userDetails.getUsername());
-        List<Ad> adList = adRepository.findAllByAuthorId(userId);
+
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        Integer userId = user.getId();
+
         List<Ad> adsList = adRepository.findAllByAuthorId(userId);
-        List<AdDTO> adDTOList = new ArrayList<>();
-        for (Ad ad : adsList) {
-            AdDTO adDTO = adMapper.toDtoAdDTO(ad);
-            adDTOList.add(adDTO);
-        }
+        List<AdDTO> adDTOList = adsList.stream()
+                .map(adMapper::toDtoAdDTO)
+                .collect(Collectors.toList());
+
         return new AdsDTO(adDTOList);
     }
 
@@ -167,24 +178,48 @@ public class AdServiceImpl implements AdService {
      *
      * @param id        ID объявления
      * @param imageFile новое изображение
+     * @throws AdNotFoundException если пользователь не найден
+     * @throws IOException         если произошла ошибка при сохранении изображения
      */
     @Override
     public void updateAdImage(Integer id, MultipartFile imageFile) {
-        Ad ad = adRepository.findById(id).orElseThrow();
-
-        // Удаляем старое изображение, если оно есть
-        if (ad.getImage() != null) {
-            imageRepository.delete(ad.getImage());
+        Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
+        int imageId = (ad.getImage() != null) ? ad.getImage().getId() : 0;
+        try {
+            Image image = imageService.addImage(imageId, imageFile);
+            ad.setImage(image);
+            adRepository.save(ad);
+        } catch (IOException e) {
+            throw new ImageNotSavedException("Ошибка при обновлении изображения");
         }
+    }
 
-        // Создаём новое изображение
-        Image image = new Image();
-        image.setFilePath(imageFile.getOriginalFilename());
-        image.setFileSize(imageFile.getSize());
-        image.setMediaType(imageFile.getContentType());
 
-        image = imageRepository.save(image);
-        ad.setImage(image);
-        adRepository.save(ad);
+    /**
+     * Загружает изображение объявления по его ID и отправляет его в HTTP-ответ.
+     *
+     * <p>Находит изображение в базе данных по указанному {@code id},
+     * считывает файл из файловой системы и передает его в выходной поток HTTP-ответа.</p>
+     *
+     * @param id       ID изображения объявления
+     * @param response HTTP-ответ, в который записывается изображение
+     * @throws IOException         если произошла ошибка при чтении файла
+     * @throws AdNotFoundException если изображение с указанным ID не найдено
+     */
+    @Override
+    public void downloadAvatarFromFileSystem(int id, HttpServletResponse response)
+            throws IOException {
+
+        Image image = imageRepository.findById(id).orElseThrow(() ->
+                new AdNotFoundException(id));
+
+        Path path = Path.of(image.getFilePath());
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream()) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType(image.getMediaType());
+            response.setContentLength((int) image.getFileSize());
+            is.transferTo(os);
+        }
     }
 }
