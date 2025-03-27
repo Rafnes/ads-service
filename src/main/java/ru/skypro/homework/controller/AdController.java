@@ -83,6 +83,8 @@ public class AdController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Получить изображение объявления", description = "Позволяет получить изображение объявления")
+    @PreAuthorize(ALL)
     @GetMapping(value = "/{id}/image/get")
     public void downloadAvatarFromFileSystem(@PathVariable int id, HttpServletResponse response)
             throws IOException {

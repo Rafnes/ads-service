@@ -56,7 +56,7 @@ public class UserController {
         userService.updateUserAvatar(image, authentication);
         return ResponseEntity.noContent().build();
     }
-
+    @Operation(summary = "Получить аватар пользователя", description = "Позволяет получить аватар пользователя")
     @GetMapping(value = "/me/image/{id}/get")
     public void downloadAvatarFromFileSystem(@PathVariable int id, HttpServletResponse response)
             throws IOException {
