@@ -4,13 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDTO;
 import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.service.UserService;
-import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -54,10 +54,10 @@ public class UserController {
         userService.updateUserAvatar(image, authentication);
         return ResponseEntity.noContent().build();
     }
+    @Operation(summary = "Получить аватар пользователя", description = "Позволяет получить аватар пользователя")
     @GetMapping(value = "/me/image/{id}/get")
     public void downloadAvatarFromFileSystem(@PathVariable int id, HttpServletResponse response)
             throws IOException {
         userService.downloadAvatarFromFileSystem(id, response);
     }
-
 }
