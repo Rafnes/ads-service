@@ -1,13 +1,17 @@
 package ru.skypro.homework.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.model.Comment;
+import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.CommentService;
 
 import java.util.List;
@@ -18,11 +22,15 @@ public class CommentServiceImpl implements CommentService {
 
     final private CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final AdRepository adRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper, AdRepository adRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
+        this.adRepository = adRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -49,6 +57,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDTO addComment(Integer adId, CreateOrUpdateCommentDTO comment) {
         Comment model = commentMapper.toModel(comment);
+        model.setAd(adRepository.findById(adId).orElseThrow());
+        model.setAuthor(userRepository.findByEmail(SecurityContextHolder.
+                        getContext().
+                        getAuthentication().
+                        getName()).
+                orElseThrow(() -> new UsernameNotFoundException("User not found")));
         Comment savedModel = commentRepository.save(model);
         return commentMapper.toDtoCommentDTO(savedModel);
     }
