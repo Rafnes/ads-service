@@ -231,7 +231,7 @@ http://localhost:8080
 
 Vitaly Dineka — TeamLead Developer
 
-Irina bogomolova — PM
+Irina Bogomolova — PM
 
 Ivan Pesterev — Developer
 
