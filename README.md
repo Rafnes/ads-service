@@ -230,6 +230,9 @@ http://localhost:8080
 ▎Команда проекта
 
 Vitaly Dineka — TeamLead Developer
+
 Irina bogomolova — PM
+
 Ivan Pesterev — Developer
+
 Andrei Fetisov —  QA
