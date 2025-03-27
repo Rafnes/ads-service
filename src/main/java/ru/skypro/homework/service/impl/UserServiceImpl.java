@@ -47,36 +47,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> setPassword(NewPasswordDTO newPasswordDTO, Authentication authentication) {
+    public void updatePassword(NewPasswordDTO newPasswordDTO, Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setPassword(encoder.encode(newPasswordDTO.getNewPassword()));
         userRepository.save(user);
-        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
+    public UserDTO getUserInfo(Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UserNotFoundException(authentication.getName()));
 
         UserDTO userDTO = userMapper.toDtoUserDTO(user);
         if (userDTO.getImage() != null) {
-            userDTO.setImage("/users/me/image/"+userDTO.getImage()+"/get");
+            userDTO.setImage("/users/me/image/" + userDTO.getImage() + "/get");
         }
-        return ResponseEntity.ok(userDTO);
+        return userDTO;
     }
 
     @Override
-    public ResponseEntity<UpdateUserDTO> updateUser(UpdateUserDTO updateUserDTO, Authentication authentication) {
+    public UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO, Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setFirstName(updateUserDTO.getFirstName());
         user.setPhone(updateUserDTO.getPhone());
         user.setLastName(updateUserDTO.getLastName());
         userRepository.save(user);
-        return ResponseEntity.ok(userMapper.toDtoUpdateUserDTO(user));
+        return userMapper.toDtoUpdateUserDTO(user);
     }
 
     @Override
-    public ResponseEntity<Void> updateUserAvatar(MultipartFile image, Authentication authentication) {
+    public void updateUserAvatar(MultipartFile image, Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         int id = 0;
         if (user.getImage() != null) {
@@ -89,18 +88,17 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             System.out.println("Ошибка записи файла");
         }
-        return ResponseEntity.noContent().build();
     }
 
-    public void downloadAvatarFromFileSystem( int studentId, HttpServletResponse response)
-            throws IOException{
+    public void downloadAvatarFromFileSystem(int studentId, HttpServletResponse response)
+            throws IOException {
 
         Image avatarOpt = imageRepository.findById(studentId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 
         Path path = Path.of(avatarOpt.getFilePath());
-        try(InputStream is = Files.newInputStream(path);
-            OutputStream os = response.getOutputStream();) {
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream();) {
             response.setStatus(200);
             response.setContentType("image/jpg");
             response.setContentLength((int) avatarOpt.getFileSize());
