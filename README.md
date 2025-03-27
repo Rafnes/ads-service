@@ -16,17 +16,29 @@ API
 ▎Технологии
 
 Java (https://www.oracle.com/java/)
+
 Spring Boot (https://spring.io/projects/spring-boot)
+
 Spring Data JPA (https://spring.io/projects/spring-data-jpa)
+
 PostgreSQL (https://www.postgresql.org/)
+
 Swagger (https://swagger.io/)
+
 Swagger Editor (https://editor.swagger.io/)
+
 Postman (https://www.postman.com/)
+
 Lombok (https://projectlombok.org/)
+
 Maven (https://maven.apache.org/)
+
 Liquibase (https://www.liquibase.com/)
+
 JUnit (https://junit.org/junit5/)
+
 Mockito (https://site.mockito.org/)
+
 Git (https://git-scm.com/)
 
 
