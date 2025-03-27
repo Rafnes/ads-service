@@ -91,7 +91,6 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDtoAdDTO(model);
     }
 
-
     /**
      * Возвращает объявление по ID
      *
