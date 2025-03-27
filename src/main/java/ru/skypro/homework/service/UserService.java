@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface UserService {
-    ResponseEntity<Void> setPassword(NewPasswordDTO newPasswordDTO, Authentication authentication);
+    void updatePassword(NewPasswordDTO newPasswordDTO, Authentication authentication);
 
-    ResponseEntity<UserDTO> getUserInfo(Authentication authentication);
+    UserDTO getUserInfo(Authentication authentication);
 
-    ResponseEntity<UpdateUserDTO> updateUser(UpdateUserDTO updateUserDTO, Authentication authentication);
+    UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO, Authentication authentication);
 
-    ResponseEntity<Void> updateUserAvatar(MultipartFile image, Authentication authentication);
+    void updateUserAvatar(MultipartFile image, Authentication authentication);
 
     void downloadAvatarFromFileSystem(int id, HttpServletResponse response) throws IOException;
 

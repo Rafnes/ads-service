@@ -32,25 +32,27 @@ public class UserController {
     @Operation(summary = "Сменить пароль", description = "Позволяет пользователю сменить пароль")
     @PostMapping("/set_password")
     public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO, Authentication authentication) {
-        return userService.setPassword(newPasswordDTO, authentication);
+        userService.updatePassword(newPasswordDTO, authentication);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Получить информацию о пользователе", description = "Возвращает данные текущего авторизованного пользователя")
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
-        return userService.getUserInfo(authentication);
+        return ResponseEntity.ok(userService.getUserInfo(authentication));
     }
 
     @Operation(summary = "Обновить данные пользователя", description = "Позволяет изменить имя, фамилию или другие данные пользователя")
     @PatchMapping("/me")
     public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, Authentication authentication) {
-        return userService.updateUser(updateUserDTO, authentication);
+        return ResponseEntity.ok(userService.updateUser(updateUserDTO, authentication));
     }
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateUserAvatar(@RequestPart("image") MultipartFile image, Authentication authentication) {
-        return userService.updateUserAvatar(image, authentication);
+        userService.updateUserAvatar(image, authentication);
+        return ResponseEntity.noContent().build();
     }
     @GetMapping(value = "/me/image/{id}/get")
     public void downloadAvatarFromFileSystem(@PathVariable int id, HttpServletResponse response)
