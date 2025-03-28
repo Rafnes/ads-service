@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Сервисный класс для управления обьявлениями.
+ * Сервисный класс для управления объявлениями.
  */
 @Service
 public class AdServiceImpl implements AdService {
@@ -44,11 +43,11 @@ public class AdServiceImpl implements AdService {
     private final ImageService imageService;
     private final UserRepository userRepository;
 
-    @Autowired
     public AdServiceImpl(AdRepository adRepository,
                          ImageRepository imageRepository,
                          AdMapper adMapper,
-                         @Qualifier("adImageService")ImageService imageService, UserRepository userRepository) {
+                         @Qualifier("adImageService") ImageService imageService,
+                         UserRepository userRepository) {
         this.adRepository = adRepository;
         this.imageRepository = imageRepository;
         this.adMapper = adMapper;
