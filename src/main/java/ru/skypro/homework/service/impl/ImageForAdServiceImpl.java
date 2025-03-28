@@ -22,18 +22,17 @@ import java.util.Objects;
  * Сервис для работы с изображениями объявлений.
  * Реализует методы для добавления изображений и их обработки.
  */
-@Service
+
+@Service("adImageService")
 @Transactional
 public class ImageForAdServiceImpl implements ImageService {
 
-    @Value("${ad.image.dir.path}")
+    @Value("${ads.image.dir.path}")
     private String imageDir;
-    private final AdService adService;
     private final ImageRepository imageRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageForAdServiceImpl.class);
 
-    public ImageForAdServiceImpl(AdService adService, ImageRepository imageRepository) {
-        this.adService = adService;
+    public ImageForAdServiceImpl(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
     }
 
@@ -49,13 +48,15 @@ public class ImageForAdServiceImpl implements ImageService {
     @Override
     public Image addImage(int adId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
+
             throw new IllegalArgumentException("File cannot be null or empty");
         }
 
-        ExtendedAdDTO ad = adService.getAd(adId);
-
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename(), "File name cannot be null");
         String extension = getExtension(originalFilename);
+        LOGGER.info("Filename: {}", originalFilename);
+        LOGGER.info("Extension: {}", extension);
+
         Path filePath = Path.of(imageDir, adId + "." + extension);
 
         if (Files.exists(filePath)) {

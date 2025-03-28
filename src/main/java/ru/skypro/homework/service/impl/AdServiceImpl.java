@@ -1,5 +1,6 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Сервисный класс для управления обьявлениями.
+ * Сервисный класс для управления объявлениями.
  */
 @Service
 public class AdServiceImpl implements AdService {
@@ -45,7 +46,8 @@ public class AdServiceImpl implements AdService {
     public AdServiceImpl(AdRepository adRepository,
                          ImageRepository imageRepository,
                          AdMapper adMapper,
-                         ImageService imageService, UserRepository userRepository) {
+                         @Qualifier("adImageService") ImageService imageService,
+                         UserRepository userRepository) {
         this.adRepository = adRepository;
         this.imageRepository = imageRepository;
         this.adMapper = adMapper;
@@ -64,8 +66,12 @@ public class AdServiceImpl implements AdService {
         List<Ad> adsList = adRepository.findAll();
         List<AdDTO> adDTOList = adsList.stream()
                 .map(adMapper::toDtoAdDTO)
+                .peek(this::setImageForDto)
                 .collect(Collectors.toList());
-        return new AdsDTO(adDTOList);
+
+        AdsDTO adsDto = adMapper.toAds(adsList.size(), adsList);
+        adsDto.setResults(adDTOList);
+        return adsDto;
     }
 
 
@@ -80,14 +86,19 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile imageFile) {
         Ad model = adMapper.toModel(properties);
+        model.setAuthor(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found")));
+        Ad savedModel = adRepository.save(model);
+
         try {
-            Image image = imageService.addImage(0, imageFile);
-            model.setImage(image);
-            model.setAuthor(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new UsernameNotFoundException("User not found")));
+            Image image = imageService.addImage(savedModel.getId(), imageFile);
+            savedModel.setImage(image);
         } catch (IOException e) {
             throw new ImageNotSavedException("Ошибка при сохранении изображения");
         }
-        adRepository.save(model);
+        adRepository.save(savedModel);
+        AdDTO adDto = adMapper.toDtoAdDTO(model);
+        setImageForDto(adDto);
         return adMapper.toDtoAdDTO(model);
     }
 
@@ -100,7 +111,11 @@ public class AdServiceImpl implements AdService {
     @Override
     public ExtendedAdDTO getAd(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
-        return adMapper.toDtoExtendedAdDTO(ad);
+        ExtendedAdDTO adDto = adMapper.toDtoExtendedAdDTO(ad);
+        if (adDto.getImage() != null) {
+            adDto.setImage("/ads/" + adDto.getImage() + "/image/get");
+        }
+        return adDto;
     }
 
 
@@ -164,6 +179,7 @@ public class AdServiceImpl implements AdService {
         List<Ad> adsList = adRepository.findAllByAuthorId(userId);
         List<AdDTO> adDTOList = adsList.stream()
                 .map(adMapper::toDtoAdDTO)
+                .peek(this::setImageForDto)
                 .collect(Collectors.toList());
 
         return new AdsDTO(adDTOList);
@@ -186,7 +202,7 @@ public class AdServiceImpl implements AdService {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         int imageId = (ad.getImage() != null) ? ad.getImage().getId() : 0;
         try {
-            Image image = imageService.addImage(imageId, imageFile);
+            Image image = imageService.addImage(ad.getId(), imageFile);
             ad.setImage(image);
             adRepository.save(ad);
         } catch (IOException e) {
@@ -206,7 +222,6 @@ public class AdServiceImpl implements AdService {
      * @throws IOException         если произошла ошибка при чтении файла
      * @throws AdNotFoundException если изображение с указанным ID не найдено
      */
-    @Override
     public void downloadAvatarFromFileSystem(int id, HttpServletResponse response)
             throws IOException {
 
@@ -216,10 +231,14 @@ public class AdServiceImpl implements AdService {
         Path path = Path.of(image.getFilePath());
         try (InputStream is = Files.newInputStream(path);
              OutputStream os = response.getOutputStream()) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType(image.getMediaType());
+            response.setStatus(200);
+            response.setContentType("image/jpg");
             response.setContentLength((int) image.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    private void setImageForDto(AdDTO adDto) {
+        adDto.setImage("/ads/" + adDto.getImage() + "/image/get");
     }
 }
