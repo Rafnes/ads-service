@@ -32,22 +32,20 @@ public class UserController {
     @Operation(summary = "Сменить пароль", description = "Позволяет пользователю сменить пароль")
     @PostMapping("/set_password")
     public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPasswordDTO newPasswordDTO, Authentication authentication) {
-        userService.setPassword(newPasswordDTO, authentication);
+        userService.updatePassword(newPasswordDTO, authentication);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Получить информацию о пользователе", description = "Возвращает данные текущего авторизованного пользователя")
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
-        UserDTO userDTO = userService.getUserInfo(authentication);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userService.getUserInfo(authentication));
     }
 
     @Operation(summary = "Обновить данные пользователя", description = "Позволяет изменить имя, фамилию или другие данные пользователя")
     @PatchMapping("/me")
     public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, Authentication authentication) {
-        UpdateUserDTO updatedUserDTO = userService.updateUser(updateUserDTO, authentication);
-        return ResponseEntity.ok(updatedUserDTO);
+        return ResponseEntity.ok(userService.updateUser(updateUserDTO, authentication));
     }
 
     @Operation(summary = "Обновить аватар пользователя", description = "Позволяет загрузить или заменить аватар пользователя")

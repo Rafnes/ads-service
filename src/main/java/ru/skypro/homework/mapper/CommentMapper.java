@@ -6,6 +6,7 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.model.Comment;
+import ru.skypro.homework.model.Image;
 
 import java.util.List;
 
@@ -35,4 +36,8 @@ public interface CommentMapper {
     @Mapping(target = "count", source = "size")
     @Mapping(target = "results", source = "list")
     CommentsDTO toDtoCommentsDTO(Integer size, List<Comment> list);
+
+    default String map(Image value) {
+        return value != null ? value.getFilePath() : null;
+    }
 }

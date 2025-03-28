@@ -83,13 +83,13 @@ public class AdServiceImpl implements AdService {
         try {
             Image image = imageService.addImage(0, imageFile);
             model.setImage(image);
+            model.setAuthor(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new UsernameNotFoundException("User not found")));
         } catch (IOException e) {
             throw new ImageNotSavedException("Ошибка при сохранении изображения");
         }
         adRepository.save(model);
         return adMapper.toDtoAdDTO(model);
     }
-
 
     /**
      * Возвращает объявление по ID
