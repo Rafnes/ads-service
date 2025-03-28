@@ -1,5 +1,7 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,11 +38,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final ImageService imageService;
 
+    @Autowired
     public UserServiceImpl(ImageRepository imageRepository,
                            UserRepository userRepository,
                            UserMapper userMapper,
                            PasswordEncoder passwordEncoder,
-                           ImageService imageService) {
+                           @Qualifier("userImageService")ImageService imageService) {
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
         this.userMapper = userMapper;

@@ -1,5 +1,7 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,10 +44,11 @@ public class AdServiceImpl implements AdService {
     private final ImageService imageService;
     private final UserRepository userRepository;
 
+    @Autowired
     public AdServiceImpl(AdRepository adRepository,
                          ImageRepository imageRepository,
                          AdMapper adMapper,
-                         ImageService imageService, UserRepository userRepository) {
+                         @Qualifier("adImageService")ImageService imageService, UserRepository userRepository) {
         this.adRepository = adRepository;
         this.imageRepository = imageRepository;
         this.adMapper = adMapper;

@@ -22,8 +22,8 @@ import java.util.Objects;
  * Сервис для работы с изображениями пользователей.
  * Реализует методы для добавления изображений и их обработки.
  */
-@Primary
-@Service
+
+@Service("userImageService")
 @Transactional
 public class ImageForUserServiceImpl implements ImageService {
 

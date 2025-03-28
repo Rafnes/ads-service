@@ -1,5 +1,6 @@
 package ru.skypro.homework.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * Сервис для работы с изображениями объявлений.
  * Реализует методы для добавления изображений и их обработки.
  */
-@Service
+@Service("adImageService")
 @Transactional
 public class ImageForAdServiceImpl implements ImageService {
 
@@ -56,6 +57,8 @@ public class ImageForAdServiceImpl implements ImageService {
 
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename(), "File name cannot be null");
         String extension = getExtension(originalFilename);
+        LOGGER.info("Filename: {}", originalFilename);
+        LOGGER.info("Extension: {}", extension);
         Path filePath = Path.of(imageDir, adId + "." + extension);
 
         if (Files.exists(filePath)) {
@@ -72,6 +75,7 @@ public class ImageForAdServiceImpl implements ImageService {
 
         imageRepository.save(image);
         LOGGER.info("Image saved for ad {}: {}", adId, image.getFilePath());
+        ad.setImage(image.getFilePath());
 
         return image;
     }
