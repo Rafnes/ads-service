@@ -48,6 +48,7 @@ public class ImageForAdServiceImpl implements ImageService {
     @Override
     public Image addImage(int adId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
+
             throw new IllegalArgumentException("File cannot be null or empty");
         }
 
