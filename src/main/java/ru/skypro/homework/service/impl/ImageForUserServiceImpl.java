@@ -10,7 +10,6 @@ import ru.skypro.homework.model.Image;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,23 +38,24 @@ public class ImageForUserServiceImpl implements ImageService {
     /**
      * Добавляет изображение для пользователя.
      *
-     * @param id   Идентификатор пользователя.
-     * @param file Файл изображения.
+     * @param userId Идентификатор пользователя.
+     * @param file   Файл изображения.
      * @return Добавленное изображение.
      * @throws IOException Если произошла ошибка при работе с файлом.
      */
     @Override
-    public Image addImage(int id, MultipartFile file) throws IOException {
+    public Image addImage(int userId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File cannot be null or empty");
         }
 
-        Image image = id == 0 ? new Image() : imageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Image not found"));
-
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename(), "File name cannot be null");
         String extension = getExtension(originalFilename);
-        Path filePath = Path.of(imageDir, image.getId() + "." + extension);
+
+        LOGGER.info("Filename: {}", originalFilename);
+        LOGGER.info("Extension: {}", extension);
+
+        Path filePath = Path.of(imageDir, "user_" + userId + "." + extension);
 
         if (Files.exists(filePath)) {
             Files.delete(filePath);
@@ -64,6 +64,8 @@ public class ImageForUserServiceImpl implements ImageService {
         Files.createDirectories(filePath.getParent());
         Files.write(filePath, file.getBytes());
 
+        Image image = imageRepository.findByFilePathContaining("user_" + userId + ".")
+                .orElse(new Image());
         image.setFilePath(filePath.toString());
         image.setFileSize(file.getSize());
         image.setMediaType(file.getContentType());
