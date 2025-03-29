@@ -76,23 +76,6 @@ public class ImageForUserServiceImpl implements ImageService {
         return image;
     }
 
-
-    /**
-     * Генерирует массив байтов изображения из файла.
-     *
-     * @param filePath Путь к файлу изображения.
-     * @return Массив байтов изображения.
-     * @throws IOException Если произошла ошибка при чтении файла.
-     */
-    @Override
-    public byte[] generateImage(Path filePath) throws IOException {
-        if (!Files.exists(filePath)) {
-            throw new FileNotFoundException("File not found: " + filePath);
-        }
-        return Files.readAllBytes(filePath);
-    }
-
-
     /**
      * Получает расширение файла по имени.
      *
