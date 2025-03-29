@@ -8,7 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Objects;
 
-
+/**
+ * Сущность комментария (Comment).
+ */
 @Entity
 @Table(name = "comments")
 @Getter

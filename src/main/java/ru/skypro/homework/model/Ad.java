@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Сущность объявления (Ad).
+ */
 @Entity
 @Table(name = "ads")
 @NoArgsConstructor
@@ -42,24 +45,12 @@ public class Ad {
     private String description;
 
     @Override
-    public String toString() {
-        return "Ad{" +
-                "id=" + id +
-                ", author=" + author +
-                ", image=" + image +
-                ", comments=" + comments +
-                ", price=" + price +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Ad)) return false;
         Ad ad = (Ad) o;
-        return price == ad.price && Objects.equals(id, ad.id)
+        return price == ad.price
+                && Objects.equals(id, ad.id)
                 && Objects.equals(author, ad.author)
                 && Objects.equals(image, ad.image)
                 && Objects.equals(comments, ad.comments)
@@ -70,5 +61,17 @@ public class Ad {
     @Override
     public int hashCode() {
         return Objects.hash(id, author, image, comments, price, title, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Ad{" + "id=" + id
+                + ", author=" + author
+                + ", image=" + image
+                + ", comments=" + comments
+                + ", price=" + price
+                + ", title='" + title
+                + '\'' + ", description='"
+                + description + '\'' + '}';
     }
 }
