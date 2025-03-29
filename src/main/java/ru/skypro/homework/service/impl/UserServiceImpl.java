@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
         try (InputStream is = Files.newInputStream(path);
              OutputStream os = response.getOutputStream();) {
             response.setStatus(200);
-            response.setContentType("image/jpg");
+            response.setContentType(avatarOpt.getMediaType());
             response.setContentLength((int) avatarOpt.getFileSize());
             is.transferTo(os);
         }
