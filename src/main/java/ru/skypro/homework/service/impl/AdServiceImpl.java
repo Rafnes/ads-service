@@ -202,7 +202,7 @@ public class AdServiceImpl implements AdService {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
         int imageId = (ad.getImage() != null) ? ad.getImage().getId() : 0;
         try {
-            Image image = imageService.addImage(ad.getId(), imageFile);
+            Image image = imageService.addImage(id, imageFile);
             ad.setImage(image);
             adRepository.save(ad);
         } catch (IOException e) {
