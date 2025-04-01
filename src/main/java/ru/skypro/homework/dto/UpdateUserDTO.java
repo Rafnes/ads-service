@@ -1,11 +1,16 @@
 package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(name = "UpdateUser")
 @Data
 public class UpdateUserDTO {

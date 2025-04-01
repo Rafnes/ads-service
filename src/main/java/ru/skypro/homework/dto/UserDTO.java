@@ -2,10 +2,13 @@ package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import ru.skypro.homework.model.Image;
+import lombok.Getter;
+import lombok.Setter;
 
 @Schema(name = "User")
 @Data
+@Getter
+@Setter
 public class UserDTO {
     private long id;
     private String email;
@@ -14,4 +17,11 @@ public class UserDTO {
     private String phone;
     private Role role;
     private String image;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(String mail, String john, String doe, String number) {
+
+    }
 }
