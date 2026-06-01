@@ -29,34 +29,22 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper, AdRepository adRepository, UserRepository userRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository,
+                              CommentMapper commentMapper,
+                              AdRepository adRepository,
+                              UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
         this.adRepository = adRepository;
         this.userRepository = userRepository;
     }
 
-
-    /**
-     * Получить все комментарии к объявлению.
-     *
-     * @param adId идентификатор объявления
-     * @return объект CommentsDTO, содержащий список комментариев и их количество
-     */
     @Override
     public CommentsDTO getComments(Integer adId) {
         List<Comment> commentList = commentRepository.findAllByAdId(adId);
         return commentMapper.toDtoCommentsDTO(commentList.size(), commentList);
     }
 
-
-    /**
-     * Добавить комментарий к объявлению.
-     *
-     * @param adId    идентификатор объявления
-     * @param comment объект CreateOrUpdateCommentDTO, содержащий данные для создания или обновления комментария
-     * @return объект CommentDTO, представляющий добавленный комментарий
-     */
     @Override
     public CommentDTO addComment(Integer adId, CreateOrUpdateCommentDTO comment) {
         Comment model = commentMapper.toModel(comment);
@@ -71,13 +59,6 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.toDtoCommentDTO(savedModel);
     }
 
-
-    /**
-     * Удалить комментарий.
-     *
-     * @param adId      идентификатор объявления
-     * @param commentId идентификатор комментария
-     */
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
         Comment comment = commentRepository.findById(commentId)
@@ -86,15 +67,6 @@ public class CommentServiceImpl implements CommentService {
         log.info("Удален комментарий: {}", comment);
     }
 
-
-    /**
-     * Обновляет существующий комментарий.
-     *
-     * @param adId      идентификатор объявления
-     * @param commentId идентификатор комментария
-     * @param comment   объект с новым текстом комментария
-     * @return обновленный комментарий в виде объекта CommentDTO
-     */
     @Override
     public CommentDTO updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDTO comment) {
         Comment existingComment = commentRepository.findById(commentId).orElseThrow();
