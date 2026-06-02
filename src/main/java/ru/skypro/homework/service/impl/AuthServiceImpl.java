@@ -9,10 +9,6 @@ import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
-/**
- * Сервис аутентификации и регистрации пользователей.
- * Реализует методы для входа и регистрации.
- */
 @Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -26,14 +22,6 @@ public class AuthServiceImpl implements AuthService {
         this.encoder = passwordEncoder;
     }
 
-
-    /**
-     * Выполняет аутентификацию пользователя.
-     *
-     * @param userName Имя пользователя (email).
-     * @param password Пароль пользователя.
-     * @return true, если аутентификация успешна, иначе false.
-     */
     @Override
     public boolean login(String userName, String password) {
         return userRepository.findByEmail(userName)
@@ -41,13 +29,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElse(false);
     }
 
-
-    /**
-     * Регистрирует нового пользователя.
-     *
-     * @param registerDTO Данные для регистрации.
-     * @return true, если регистрация успешна, иначе false.
-     */
     @Override
     public boolean register(RegisterDTO registerDTO) {
         if (userRepository.findByEmail(registerDTO.getUsername()).isPresent()) {

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
-    List<Comment> findAllByAdId(Integer adId);
 
+    List<Comment> findAllByAdId(Integer adId);
 }

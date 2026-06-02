@@ -183,8 +183,8 @@ class AdServiceImplTest {
         // Arrange
         User user = new User();
         user.setId(1);
-        user.setEmail("test@mail.ru"); // Убедитесь, что вы устанавливаете email
-        // Настройка мока для UserDetails
+        user.setEmail("test@mail.ru");
+
         SecurityUser securityUser = new SecurityUser(user);
 
         // Настройка мока для userRepository

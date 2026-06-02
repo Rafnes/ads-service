@@ -5,7 +5,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.AdsDTO;
@@ -16,13 +25,16 @@ import ru.skypro.homework.service.AdService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static ru.skypro.homework.roles.RoleAuthority.*;
+import static ru.skypro.homework.roles.RoleAuthority.ADMIN;
+import static ru.skypro.homework.roles.RoleAuthority.ALL;
+import static ru.skypro.homework.roles.RoleAuthority.USER;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequestMapping("/ads")
 @Tag(name = "Объявления", description = "Методы для работы с объявлениями")
 public class AdController {
+
     private final AdService adService;
 
     AdController(AdService adService) {

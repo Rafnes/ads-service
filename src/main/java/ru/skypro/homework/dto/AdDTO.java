@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.skypro.homework.model.Image;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "Ad")
 @Data
 public class AdDTO {
+
     private Integer author;
     private String image;
     private Integer pk;
@@ -23,6 +23,5 @@ public class AdDTO {
     }
 
     public AdDTO(String testAd, int i, String testDescription) {
-
     }
 }

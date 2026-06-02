@@ -10,6 +10,7 @@ import java.time.Instant;
 @Schema(name = "Comment")
 @Data
 public class CommentDTO {
+
     private Integer author;
     private String authorImage;
     private String authorFirstName;

@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Schema(name = "ExtendedAd")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExtendedAdDTO {
+
     private Integer pk;
     private String authorFirstName;
     private String authorLastName;

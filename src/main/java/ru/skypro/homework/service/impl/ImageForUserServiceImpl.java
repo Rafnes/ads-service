@@ -10,7 +10,6 @@ import ru.skypro.homework.model.Image;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,15 +33,6 @@ public class ImageForUserServiceImpl implements ImageService {
         this.imageRepository = imageRepository;
     }
 
-
-    /**
-     * Добавляет изображение для пользователя.
-     *
-     * @param userId Идентификатор пользователя.
-     * @param file   Файл изображения.
-     * @return Добавленное изображение.
-     * @throws IOException Если произошла ошибка при работе с файлом.
-     */
     @Override
     public Image addImage(int userId, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {

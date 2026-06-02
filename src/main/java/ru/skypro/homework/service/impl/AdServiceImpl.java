@@ -32,9 +32,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Сервисный класс для управления объявлениями.
- */
 @Slf4j
 @Service
 public class AdServiceImpl implements AdService {
@@ -57,12 +54,6 @@ public class AdServiceImpl implements AdService {
         this.userRepository = userRepository;
     }
 
-
-    /**
-     * Возвращает список всех объявлений из базы данных.
-     *
-     * @return {@link AdsDTO} содержащий список объявлений
-     */
     @Override
     public AdsDTO getAllAds() {
         List<Ad> adsList = adRepository.findAll();
@@ -76,15 +67,6 @@ public class AdServiceImpl implements AdService {
         return adsDto;
     }
 
-
-    /**
-     * Сохраняет новое объявление в базу данных. Изображение объявления извлекается
-     * из данного MultipartFile и сохраняется в базу данных.
-     *
-     * @param properties свойства объявления, за исключением изображения
-     * @param imageFile  изображение объявления
-     * @return сохраненное объявление
-     */
     @Override
     public AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile imageFile) {
         Ad model = adMapper.toModel(properties);
@@ -104,12 +86,6 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDtoAdDTO(model);
     }
 
-    /**
-     * Возвращает объявление по ID
-     *
-     * @param id ID объявления
-     * @return {@link ExtendedAdDTO} с информацией об объявлении
-     */
     @Override
     public ExtendedAdDTO getAd(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
@@ -120,15 +96,6 @@ public class AdServiceImpl implements AdService {
         return adDto;
     }
 
-
-    /**
-     * Удаляет объявление из базы данных.
-     * <p>
-     * Удаляет объявление с указанным {@code id} из базы данных. Если объявление
-     * с таким ID не найдено, выбрасывается исключение.
-     *
-     * @param id ID объявления, которое нужно удалить
-     */
     @Override
     public void deleteAd(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
@@ -139,18 +106,6 @@ public class AdServiceImpl implements AdService {
         log.info("Удалено объявление: {}", ad);
     }
 
-
-    /**
-     * Обновляет информацию об объявлении
-     * <p>
-     * Обновляет информацию об объявлении с указанным {@code id} согласно данным
-     * из {@code createOrUpdateAdDTO}. Изображение объявления не может быть
-     * обновлено этим методом.
-     *
-     * @param id                  ID объявления
-     * @param createOrUpdateAdDTO новые данные объявления
-     * @return {@link AdDTO} с обновленными данными
-     */
     @Override
     public AdDTO updateAd(Integer id, CreateOrUpdateAdDTO createOrUpdateAdDTO) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
@@ -162,15 +117,6 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDtoAdDTO(ad);
     }
 
-
-    /**
-     * Возвращает список объявлений, созданных текущим пользователем
-     * <p>
-     * Возвращает список {@link AdDTO} объявлений, созданных текущим
-     * пользователем.
-     *
-     * @return {@link AdsDTO} с информацией список объявлений
-     */
     @Override
     public AdsDTO getUserAds() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -189,18 +135,6 @@ public class AdServiceImpl implements AdService {
         return new AdsDTO(adDTOList);
     }
 
-
-    /**
-     * Обновляет изображение объявления.
-     * <p>
-     * Обновляет изображение объявления с указанным {@code id} на новое
-     * изображение, переданное в {@code image}.
-     *
-     * @param id        ID объявления
-     * @param imageFile новое изображение
-     * @throws AdNotFoundException если пользователь не найден
-     * @throws IOException         если произошла ошибка при сохранении изображения
-     */
     @Override
     public void updateAdImage(Integer id, MultipartFile imageFile) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException(id));
@@ -215,18 +149,6 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-
-    /**
-     * Загружает изображение объявления по его ID и отправляет его в HTTP-ответ.
-     *
-     * <p>Находит изображение в базе данных по указанному {@code id},
-     * считывает файл из файловой системы и передает его в выходной поток HTTP-ответа.</p>
-     *
-     * @param id       ID изображения объявления
-     * @param response HTTP-ответ, в который записывается изображение
-     * @throws IOException         если произошла ошибка при чтении файла
-     * @throws AdNotFoundException если изображение с указанным ID не найдено
-     */
     public void downloadAvatarFromFileSystem(int id, HttpServletResponse response)
             throws IOException {
 

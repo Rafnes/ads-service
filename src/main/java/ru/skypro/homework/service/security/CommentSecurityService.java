@@ -11,13 +11,9 @@ import ru.skypro.homework.repository.CommentRepository;
  */
 @Service
 public class CommentSecurityService {
+
     private final CommentRepository commentRepository;
 
-    /**
-     * Конструктор CommentSecurityService.
-     *
-     * @param commentRepository репозиторий комментариев
-     */
     public CommentSecurityService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }

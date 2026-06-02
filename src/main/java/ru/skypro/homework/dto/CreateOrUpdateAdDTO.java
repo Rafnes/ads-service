@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @Schema(name = "CreateOrUpdateAd")
 @Data
 public class CreateOrUpdateAdDTO {
+
     @Size(min = 4, max = 32, message = "Длина названия должна быть от 4 до 32 символов")
     private String title;
 

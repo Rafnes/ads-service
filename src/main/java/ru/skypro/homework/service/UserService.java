@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface UserService {
+
     void updatePassword(NewPasswordDTO newPasswordDTO, Authentication authentication);
 
     UserDTO getUserInfo(Authentication authentication);
