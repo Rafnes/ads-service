@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface AdService {
+
     AdsDTO getAllAds();
 
     AdDTO addAd(CreateOrUpdateAdDTO properties, MultipartFile image);

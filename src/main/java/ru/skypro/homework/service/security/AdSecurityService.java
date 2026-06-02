@@ -11,13 +11,9 @@ import ru.skypro.homework.repository.AdRepository;
  */
 @Service
 public class AdSecurityService {
+
     private final AdRepository adRepository;
 
-    /**
-     * Конструктор AdSecurityService.
-     *
-     * @param adRepository репозиторий объявлений
-     */
     public AdSecurityService(AdRepository adRepository) {
         this.adRepository = adRepository;
     }

@@ -8,6 +8,7 @@ import java.util.List;
 @Schema(name = "Comments")
 @Data
 public class CommentsDTO {
+
     private Integer count;
     private List<CommentDTO> results;
 

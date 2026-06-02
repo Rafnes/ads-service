@@ -21,10 +21,11 @@ public interface CommentMapper {
     @Mapping(source = "text", target = "text")
     Comment toModel(CommentDTO dto);
 
+
     @Mapping(source = "text", target = "text")
     Comment toModel(CreateOrUpdateCommentDTO dto);
 
-    //_____ toDto___
+
     @Mapping(source = "author.id", target = "author")
     @Mapping(source = "author.firstName", target = "authorFirstName")
     @Mapping(source = "author.image", target = "authorImage")
@@ -32,12 +33,15 @@ public interface CommentMapper {
     @Mapping(source = "text", target = "text")
     CommentDTO toDtoCommentDTO(Comment commentModel);
 
+
     @Mapping(source = "text", target = "text")
     CreateOrUpdateCommentDTO toDtoCreateOrUpdateCommentDTO(Comment commentModel);
+
 
     @Mapping(target = "count", source = "size")
     @Mapping(target = "results", source = "list")
     CommentsDTO toDtoCommentsDTO(Integer size, List<Comment> list);
+
 
     default String map(Image value) {
         return value != null ? "/users/me/image/" + value.getId() + "/get" : null;
