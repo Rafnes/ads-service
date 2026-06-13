@@ -1,113 +1,82 @@
-▎Описание проекта Ads-Service
+# Ads-Service Marketplace Service
 
 Данный проект представляет собой бэкенд-приложение для платформы объявлений с функциональностью авторизации, аутентификации пользователей, управления объявлениями и комментариями, а также загрузки и отображения изображений. Проект реализует трехслойную архитектуру, использующую DTO, контроллеры, репозитории, сервисы и мапперы. Все данные хранятся в базе данных PostgreSQL.
 
-Содержание:
-Технологии
-Основные функции
-Структура проекта
-Требования
-Настройка проекта
-API
-Роли и доступ
-Тестирование
-Команда проекта
+## Содержание
 
+- [Технологии](#технологии)
+- [Основные функции](#основные-функции)
+- [Структура проекта](#структура-проекта)
+- [Начало работы](#начало-работы)
+- [Настройка проекта](#настройка-проекта)
+- [API](#API)
+- [Роли и доступ](#роли-и-доступ)
+- [Тестирование](#тестирование)
+- [Команда проекта](#команда-проекта)
 
-▎Технологии
+## Технологии
 
-Java (https://www.oracle.com/java/)
+- [Java](https://www.oracle.com/java/)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Swagger](https://swagger.io/)
+- [Swagger Editor](https://editor.swagger.io/)
+- [Postman](https://www.postman.com/)
+- [Lombok](https://projectlombok.org/)
+- [Maven](https://maven.apache.org/)
+- [Liquibase](https://www.liquibase.com/)
+- [JUnit](https://junit.org/junit5/)
+- [Mockito](https://site.mockito.org/)
+- [Git](https://git-scm.com/)
 
-Spring Boot (https://spring.io/projects/spring-boot)
-
-Spring Data JPA (https://spring.io/projects/spring-data-jpa)
-
-PostgreSQL (https://www.postgresql.org/)
-
-Swagger (https://swagger.io/)
-
-Swagger Editor (https://editor.swagger.io/)
-
-Postman (https://www.postman.com/)
-
-Lombok (https://projectlombok.org/)
-
-Maven (https://maven.apache.org/)
-
-Liquibase (https://www.liquibase.com/)
-
-JUnit (https://junit.org/junit5/)
-
-Mockito (https://site.mockito.org/)
-
-Git (https://git-scm.com/)
-
-
-
-▎Основные функции
+## Основные функции
 
 • Авторизация и аутентификация пользователей с распределением ролей (пользователь и администратор).
 
-  
 • CRUD-операции для работы с объявлениями и комментариями:
-
   • Администратор может удалять или редактировать все объявления и комментарии.
-
   • Пользователь может редактировать или удалять только свои объявления и комментарии.
 
-  
 • Комментарии под каждым объявлением, с возможностью их добавления пользователями.
 
 • Загрузка и отображение изображений:
-
   • Картинки для объявлений.
-
   • Аватарки для пользователей.
 
-
-
-▎Структура проекта
+## Структура проекта
 
 Проект состоит из нескольких основных слоев:
 
 • DTO — Объекты для передачи данных между слоями (Data Transfer Objects).
+• Controllers — Обрабатывают HTTP-запросы и взаимодействуют с сервисами.
+• Entities — Представляют данные в базе данных (например User, Ad, Comment).
+• Repositories — Интерфейсы для работы с базой данных с использованием Spring Data JPA.
+• Services — Логика работы с сущностями и преобразование данных из/в DTO.
+• Mappers — Утилиты для преобразования сущностей в DTO и обратно.
 
-• Контроллеры — Обрабатывают HTTP-запросы и взаимодействуют с сервисами.
+## Начало работы
 
-• Сущности — Представляют данные в базе данных (например, User, Ad, Comment).
+### Требования
 
-• Репозитории — Интерфейсы для работы с базой данных с использованием Spring Data JPA.
+Для установки и запуска проекта, необходимы:
 
-• Сервисы — Логика работы с сущностями и преобразование данных из/в DTO.
+- Java 17 (https://www.oracle.com/java/)
+- Maven (https://maven.apache.org/)
+- Spring Boot 2.5+ (https://start.spring.io/)
+- PostgreSQL (https://www.postgresql.org/)
+- Spring Security (https://spring.io/projects/spring-security)
+- JUnit (https://junit.org/junit5/)
+- Docker (https://www.docker.com/)
 
-• Мапперы — Утилиты для преобразования сущностей в DTO и обратно.
-
-
-
-▎Требования
-
-• Java 17 (или ниже) (https://www.oracle.com/java/)
-
-• Maven (https://maven.apache.org/)
-
-• Spring Boot 2.5+ (https://start.spring.io/)
-
-• PostgreSQL для хранения данных (https://www.postgresql.org/)
-
-• Spring Security для настройки аутентификации и авторизации (https://spring.io/projects/spring-security)
-
-• JUnit для тестирования (https://junit.org/junit5/)
-
-
-
-▎Настройка проекта
+## Настройка проекта
 
 1. Клонировать репозиторий:
 
    ```git clone <url>```
   ```cd <project-folder>```
 
-2. Установить зависимости с помощью Maven или Gradle: Для Maven:
+2. Установить зависимости с помощью Maven:
 
       ```mvn clean install```
    
@@ -140,21 +109,19 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 http://localhost:8080
 
-
-
-▎API
+## API
 
 Проект предоставляет RESTful API с основными методами для работы с объявлениями, комментариями и изображениями. Пример запросов:
 
-Авторизация:
+### Авторизация:
 
 • POST /login — Вход в систему. Параметры: username, password.
 
-Регистрация:
+### Регистрация:
 
 • POST /register — Регистрация нового пользователя. Параметры: username, password, role, firstName, lastName, phone.
 
-Пользователи: 
+### Пользователи: 
 
 • POST /users/set_password — Сменить пароль
 
@@ -166,7 +133,7 @@ http://localhost:8080
 
 • GET /users/me/image/{id}/get — Получить изображение пользователя
 
-Объявления:
+### Объявления:
 
 • GET /ads — Получение списка всех объявлений
 
@@ -182,7 +149,7 @@ http://localhost:8080
 
 • PATCH /ads/{id}/image — Обновление картинки объявления
 
-Комментарии:
+### Комментарии:
 
 • GET /ads/{Adid}/comments — Получение комментариев для объявления
 
@@ -192,27 +159,20 @@ http://localhost:8080
 
 • DELETE /ads/{adId}/comments/{commentId} — Удаление комментария
 
-
-
-▎Роли и доступ
+### Роли и доступ
 
 Пользователь:
 
 • Может создавать, редактировать и удалять только свои объявления и комментарии.
-
 • Может добавлять комментарии под объявлениями.
-
 • Может изменять свою аватарку и просматривать изображения.
 
 Администратор:
 
 • Может управлять всеми объявлениями и комментариями.
-
 • Может изменять аватарки пользователей.
 
-
-
-▎Тестирование
+## Тестирование
 
 Проект включает интеграционные тесты для всех основных сервисов. Для запуска тестов используйте команду:
 ```mvn test```
@@ -225,11 +185,9 @@ http://localhost:8080
 
 - Обработка изображений.
 
+## Команда проекта
 
-
-▎Команда проекта
-
-Vitaly Dineka — TeamLead Developer
+Vitaly Dineka — Main Developer
 
 Irina Bogomolova — PM
 
