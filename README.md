@@ -170,5 +170,3 @@ Irina Bogomolova — PM
 Ivan Pesterev — Developer
 
 Andrei Fetisov — QA
-
-Andrei Fetisov —  QA
